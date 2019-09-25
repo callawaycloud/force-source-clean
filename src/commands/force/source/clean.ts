@@ -28,7 +28,7 @@ export default class Org extends SfdxCommand {
   public static args = [{name: 'file'}];
 
   protected static flagsConfig = {
-    manifest: flags.string({char: 'x', description: messages.getMessage('manifestFlagDescription')}),
+    manifest: flags.string({char: 'x', description: messages.getMessage('manifestFlagDescription'), required: true}),
     noprompt: flags.boolean({char: 'n', description: messages.getMessage('noPromptFlagDescription')})
   };
 
