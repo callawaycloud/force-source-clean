@@ -4,7 +4,7 @@ An sfdx plugin which runs `force:source:retrieve --manifest ...` and removes any
 
 ## Setup
 
-run `sfdx plugins install force-source-clean`
+run `sfdx plugins:install force-source-clean`
 
 ## Usage
 
@@ -45,6 +45,8 @@ EXAMPLES
   $ sfdx force:source:clean -x manifest/package.xml
   $ sfdx force:source:clean -x manifest/package.xml --noprompt
 ```
+
+_See code: [lib/commands/force/source/clean.js](https://github.com/ChuckJonas/force-source-clean/blob/v0.0.0/lib/commands/force/source/clean.js)_
 <!-- commandsstop -->
 
 
