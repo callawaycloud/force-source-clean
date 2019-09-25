@@ -1,0 +1,7 @@
+{
+  "commandDescription": "Runs 'sfdx force:source:retrieve -manifest' AND deletes any source no longer found in the org",
+  "manifestFlagDescription": "The complete path for the manifest (package.xml) file that specifies the components to retrieve.",
+  "noPromptFlagDescription": "Skips the warning and 'continue' prompt.  Only use if you already understand the impacts!",
+  "promptWarning": "This command can be dangerous! It is intended to be used along side source control.  IT WILL REMOVE ALL FILES FROM 'packageDirectories' WHICH ARE NOT FOUND IN THE TARGET ORG.  They will not be recoverable unless tracked in source control!",
+  "errorNoOrgResults": "No results found for the org '%s'."
+}
