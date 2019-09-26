@@ -1,7 +1,7 @@
 {
   "name": "force-source-clean",
   "description": "SFDX plugin which performs the 'force:source:retrieve --manifest' command but removes stale files",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Charlie Jonas @ChuckJonas",
   "bugs": "https://github.com/ChuckJonas/force-source-clean/issues",
   "dependencies": {
