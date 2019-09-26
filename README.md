@@ -4,7 +4,7 @@ An sfdx plugin which runs `force:source:retrieve --manifest ...` and removes any
 
 ## Setup
 
-run `sfdx plugins install force-source-clean`
+run `sfdx plugins:install force-source-clean`
 
 ## Usage
 
