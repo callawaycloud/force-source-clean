@@ -21,15 +21,15 @@ export default class Org extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-   '$ sfdx force:source:clean -x manifest/package.xml',
-   '$ sfdx force:source:clean -x manifest/package.xml --noprompt'
+    '$ sfdx force:source:clean -x manifest/package.xml',
+    '$ sfdx force:source:clean -x manifest/package.xml --noprompt'
   ];
 
-  public static args = [{name: 'file'}];
+  public static args = [{ name: 'file' }];
 
   protected static flagsConfig = {
-    manifest: flags.string({char: 'x', description: messages.getMessage('manifestFlagDescription'), required: true}),
-    noprompt: flags.boolean({char: 'n', description: messages.getMessage('noPromptFlagDescription')})
+    manifest: flags.string({ char: 'x', description: messages.getMessage('manifestFlagDescription'), required: true }),
+    noprompt: flags.boolean({ char: 'n', description: messages.getMessage('noPromptFlagDescription') })
   };
 
   // Comment this out if your command does not require an org username
@@ -40,16 +40,19 @@ export default class Org extends SfdxCommand {
 
   public async run(): Promise<AnyJson> {
 
+    const connection = this.org.getConnection();
+    const targetUser = connection.getUsername();
+    const sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
+
     if (!this.flags.noprompt) {
-      this.ux.warn(chalk.default.red(messages.getMessage('promptWarning')));
+      this.ux.warn(
+        `${chalk.default.bold.red('This command can be dangerous!')} It is intended to be used along side source control.  IT WILL REMOVE ALL FILES FROM ${chalk.default.red(sourcePaths.map(p => path.join(this.project.getPath(), p)).join(' & '))} WHICH ARE NOT FOUND IN THE TARGET ORG (${targetUser}).  They will not be recoverable unless tracked in source control!`
+      );
       const confirm = await this.ux.prompt('Do you wish to continue? (y)');
       if (confirm !== 'y') {
         return;
       }
     }
-
-    const connection = this.org.getConnection();
-    const sourcePaths = ((await this.project.resolveProjectConfig())['packageDirectories'] as any[]).map(d => d.path);
 
     for (const sourcePath of sourcePaths) {
       markContents(sourcePath);
@@ -58,8 +61,8 @@ export default class Org extends SfdxCommand {
     try {
       await spawnPromise({
         cmd: 'sfdx',
-        args: ['force:source:retrieve', '-x', this.flags.manifest, '-u', connection.getUsername()],
-        options: {shell: true},
+        args: ['force:source:retrieve', '-x', this.flags.manifest, '-u', targetUser],
+        options: { shell: true },
         onStdOut: msg => this.ux.log(msg)
       });
     } catch (e) {
