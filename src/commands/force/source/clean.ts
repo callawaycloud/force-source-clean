@@ -4,6 +4,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import * as chalk from 'chalk';
 import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
+import ignore, { Ignore } from 'ignore';
 import * as path from 'path';
 import * as copy from 'recursive-copy';
 import * as rimraf from 'rimraf';
@@ -63,11 +64,14 @@ export default class Org extends SfdxCommand {
       });
     });
 
+    const ignore = await getIgnore(this.project.getPath());
     for (const sourcePath of sourcePaths) {
+
       // backup
       await copy(sourcePath, path.join(tempDir, sourcePath));
       // mark
-      markContents(sourcePath);
+      markContents(sourcePath, ignore);
+
     }
 
     try {
@@ -84,7 +88,7 @@ export default class Org extends SfdxCommand {
       this.ux.log('Restoring source from backup');
       // restore
       for (const sourcePath of sourcePaths) {
-        await copy(path.join(tempDir, sourcePath), sourcePath, {overwrite: true});
+        await copy(path.join(tempDir, sourcePath), sourcePath, { overwrite: true });
       }
       return;
     }
@@ -96,6 +100,17 @@ export default class Org extends SfdxCommand {
 
     return {};
   }
+}
+
+async function getIgnore(projectRoot: string) {
+  const ig = ignore();
+  const ignorePath = path.join(projectRoot, '.forceignore');
+  if (fs.existsSync(ignorePath)) {
+    const file = await (await fs.promises.readFile(ignorePath)).toString();
+    ig.add(file);
+  }
+
+  return ig;
 }
 
 interface SpawnPromiseArgs {
@@ -136,22 +151,26 @@ function spawnPromise({ cmd, args, options, onStdOut, onStdErr }: SpawnPromiseAr
   });
 }
 
-function markContents(targetDir: string) {
+function markContents(targetDir: string, ignore: Ignore) {
+  console.log(targetDir);
   fs.readdir(targetDir, (err, files) => {
     files.forEach((file, index) => {
       fs.stat(path.join(targetDir, file), (err, stat) => {
         if (err) {
           return console.error(err);
         }
-
+        const filePath = path.join(targetDir, file);
         if (stat.isDirectory()) {
-          markContents(path.resolve(targetDir, file));
+          markContents(filePath, ignore);
         } else {
-          fs.writeFile(path.join(targetDir, file), FILE_MARKER_CONTENTS, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
+
+          if (!ignore.ignores(filePath)) {
+            fs.writeFile(filePath, FILE_MARKER_CONTENTS, (err) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          }
         }
       });
     });
