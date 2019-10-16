@@ -25,8 +25,6 @@ export default class Org extends SfdxCommand {
     '$ sfdx force:source:clean -x manifest/package.xml --noprompt'
   ];
 
-  public static args = [{ name: 'file' }];
-
   protected static flagsConfig = {
     manifest: flags.string({ char: 'x', description: messages.getMessage('manifestFlagDescription'), required: true }),
     noprompt: flags.boolean({ char: 'n', description: messages.getMessage('noPromptFlagDescription') })
@@ -59,6 +57,7 @@ export default class Org extends SfdxCommand {
     }
 
     try {
+      this.ux.startSpinner('Retrieving Source');
       await spawnPromise({
         cmd: 'sfdx',
         args: ['force:source:retrieve', '-x', this.flags.manifest, '-u', targetUser],
