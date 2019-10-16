@@ -5,7 +5,9 @@ import * as chalk from 'chalk';
 import { spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as copy from 'recursive-copy';
 import * as rimraf from 'rimraf';
+import * as tmp from 'tmp';
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
@@ -52,7 +54,19 @@ export default class Org extends SfdxCommand {
       }
     }
 
+    const tempDir = await new Promise<string>((resolve, reject) => {
+      tmp.dir((err, tPath) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(tPath);
+      });
+    });
+
     for (const sourcePath of sourcePaths) {
+      // backup
+      await copy(sourcePath, path.join(tempDir, sourcePath));
+      // mark
       markContents(sourcePath);
     }
 
@@ -65,15 +79,20 @@ export default class Org extends SfdxCommand {
         onStdOut: msg => this.ux.log(msg)
       });
     } catch (e) {
-      this.ux.warn('Failed to retrieve! All files are "marked" and will need to be manually reset!');
-      this.ux.error(e);
-
+      this.ux.stopSpinner('failed');
+      this.ux.error(`\n ${e} \n`);
+      this.ux.log('Restoring source from backup');
+      // restore
+      for (const sourcePath of sourcePaths) {
+        await copy(path.join(tempDir, sourcePath), sourcePath, {overwrite: true});
+      }
       return;
     }
 
     for (const sourcePath of sourcePaths) {
       deletedMarked(sourcePath);
     }
+    this.ux.stopSpinner('Clean Completed');
 
     return {};
   }

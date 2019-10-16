@@ -10,7 +10,6 @@
             "name": "Attach to Remote",
             "address": "127.0.0.1",
             "port": 9229,
-            "localRoot": "${workspaceFolder}"
         },
         {
             "name": "Unit Tests",
