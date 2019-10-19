@@ -66,12 +66,10 @@ export default class Org extends SfdxCommand {
 
     const ignore = await getIgnore(this.project.getPath());
     for (const sourcePath of sourcePaths) {
-
       // backup
       await copy(sourcePath, path.join(tempDir, sourcePath));
       // mark
       markContents(sourcePath, ignore);
-
     }
 
     try {
