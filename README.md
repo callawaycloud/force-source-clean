@@ -9,15 +9,15 @@ run `sfdx plugins:install force-source-clean`
 ## Usage
 
 <!-- commands -->
-* [`sfdx force:source:clean -x <string> [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcesourceclean--x-string--n--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx force:source:clean [-x <string>] [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcesourceclean--x-string--n--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
-## `sfdx force:source:clean -x <string> [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+## `sfdx force:source:clean [-x <string>] [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 Runs 'sfdx force:source:retrieve -manifest' AND deletes any source no longer found in the org
 
 ```
 USAGE
-  $ sfdx force:source:clean -x <string> [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
+  $ sfdx force:source:clean [-x <string>] [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -28,10 +28,10 @@ OPTIONS
   -u, --targetusername=targetusername                                               username or alias for the target
                                                                                     org; overrides default target org
 
-  -x, --manifest=manifest                                                           (required) The complete path for the
-                                                                                    manifest (package.xml) file that
-                                                                                    specifies the components to
-                                                                                    retrieve.
+  -x, --manifest=manifest                                                           [default: manifest/package.xml] The
+                                                                                    complete path for the manifest
+                                                                                    (package.xml) file that specifies
+                                                                                    the components to retrieve.
 
   --apiversion=apiversion                                                           override the api version used for
                                                                                     api requests made by this command
@@ -46,7 +46,7 @@ EXAMPLES
   $ sfdx force:source:clean -x manifest/package.xml --noprompt
 ```
 
-_See code: [lib/commands/force/source/clean.js](https://github.com/ChuckJonas/force-source-clean/blob/v0.0.3/lib/commands/force/source/clean.js)_
+_See code: [lib/commands/force/source/clean.js](https://github.com/ChuckJonas/force-source-clean/blob/v0.0.5/lib/commands/force/source/clean.js)_
 <!-- commandsstop -->
 
 

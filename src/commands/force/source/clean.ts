@@ -29,7 +29,7 @@ export default class Org extends SfdxCommand {
   ];
 
   protected static flagsConfig = {
-    manifest: flags.string({ char: 'x', description: messages.getMessage('manifestFlagDescription'), required: true }),
+    manifest: flags.string({ char: 'x', description: messages.getMessage('manifestFlagDescription'), default: path.join('manifest', 'package.xml') }),
     noprompt: flags.boolean({ char: 'n', description: messages.getMessage('noPromptFlagDescription') })
   };
 
@@ -150,7 +150,6 @@ function spawnPromise({ cmd, args, options, onStdOut, onStdErr }: SpawnPromiseAr
 }
 
 function markContents(targetDir: string, ignore: Ignore) {
-  console.log(targetDir);
   fs.readdir(targetDir, (err, files) => {
     files.forEach((file, index) => {
       fs.stat(path.join(targetDir, file), (err, stat) => {
