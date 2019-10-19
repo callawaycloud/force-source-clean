@@ -1,5 +1,7 @@
 # force-source-clean
 
+![npm](https://img.shields.io/npm/v/force-source-clean)
+
 An sfdx plugin which runs `force:source:retrieve --manifest ...` and removes any stale files after refresh.
 
 ## Setup
