@@ -162,11 +162,19 @@ function markContents(targetDir: string, ignore: Ignore) {
         } else {
 
           if (!ignore.ignores(filePath)) {
-            fs.writeFile(filePath, FILE_MARKER_CONTENTS, (err) => {
-              if (err) {
-                console.log(err);
-              }
-            });
+            if (!filePath.endsWith('-meta.xml')) {
+              fs.unlink(filePath, err => {
+                if (err) {
+                  console.log(err);
+                }
+              });
+            } else {
+              fs.writeFile(filePath, FILE_MARKER_CONTENTS, (err) => {
+                if (err) {
+                  console.log(err);
+                }
+              });
+            }
           }
         }
       });
