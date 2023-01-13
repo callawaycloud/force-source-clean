@@ -47,7 +47,7 @@ EXAMPLES
   $ sfdx force:source:clean -x manifest/package.xml --noprompt
 ```
 
-_See code: [src/commands/force/source/clean.ts](https://github.com/ChuckJonas/force-source-clean/blob/v0.1.1/src/commands/force/source/clean.ts)_
+_See code: [src/commands/force/source/clean.ts](https://github.com/ChuckJonas/force-source-clean/blob/v1.0.0/src/commands/force/source/clean.ts)_
 <!-- commandsstop -->
 
 
@@ -59,7 +59,26 @@ It basically just replaces the contents of ALL the files with in `packageDirecto
 
 The original plan to look at last modified timestamps, but the `force:source:retrieve` command is optimized to not write if the file has not changed.
 
-As of this release, if the retrieve command fails, it will not revert the "marked" contents.  Hopefully you heeded the warning and have everything in source control. 
+If the retrieve command fails, it will revert the "marked" contents.  
+
+## Debugging your plugin
+We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.
+
+To debug the `source:source:clean` command: 
+
+1. Run `npm run watch` to watch for changes and recompile your plugin on save.
+
+2. From inside a valid SFDX project run, call the command using:
+
+```sh-session
+NODE_OPTIONS=--inspect-brk ~/path/to/force-source-clean/bin/run force:source:clean
+```
+
+*This will start the inspector and suspend the process on the first line of the program.*
+
+4. Start the debugger, using the "Attach to Remote" launch configuration.
+
+5. The debugger will now be attached to the node process and you can step through your code.
 
 
 ## Disclaimer
