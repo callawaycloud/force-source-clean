@@ -19,36 +19,35 @@ Runs 'sfdx force:source:retrieve -manifest' AND deletes any source no longer fou
 
 ```
 USAGE
-  $ sfdx force:source:clean [-x <string>] [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx force:source:clean [-x <string>] [-n] [-u <string>] [--apiversion <string>] [--json] [--loglevel
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
+FLAGS
   -n, --noprompt                                                                    Skips the warning and 'continue'
                                                                                     prompt.  Only use if you already
                                                                                     understand the impacts!
-
-  -u, --targetusername=targetusername                                               username or alias for the target
+  -u, --targetusername=<value>                                                      username or alias for the target
                                                                                     org; overrides default target org
-
-  -x, --manifest=manifest                                                           [default: manifest/package.xml] The
+  -x, --manifest=<value>                                                            [default: manifest/package.xml] The
                                                                                     complete path for the manifest
                                                                                     (package.xml) file that specifies
                                                                                     the components to retrieve.
-
-  --apiversion=apiversion                                                           override the api version used for
+  --apiversion=<value>                                                              override the api version used for
                                                                                     api requests made by this command
-
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
+DESCRIPTION
+  Runs 'sfdx force:source:retrieve -manifest' AND deletes any source no longer found in the org
+
 EXAMPLES
   $ sfdx force:source:clean -x manifest/package.xml
+
   $ sfdx force:source:clean -x manifest/package.xml --noprompt
 ```
 
-_See code: [lib/commands/force/source/clean.js](https://github.com/ChuckJonas/force-source-clean/blob/v0.1.0/lib/commands/force/source/clean.js)_
+_See code: [src/commands/force/source/clean.ts](https://github.com/ChuckJonas/force-source-clean/blob/v0.1.1/src/commands/force/source/clean.ts)_
 <!-- commandsstop -->
 
 
