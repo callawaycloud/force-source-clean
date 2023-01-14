@@ -47,7 +47,7 @@ EXAMPLES
   $ sfdx force:source:clean -x manifest/package.xml --noprompt
 ```
 
-_See code: [src/commands/force/source/clean.ts](https://github.com/ChuckJonas/force-source-clean/blob/v1.0.0/src/commands/force/source/clean.ts)_
+_See code: [src/commands/force/source/clean.ts](https://github.com/ChuckJonas/force-source-clean/blob/v1.0.1/src/commands/force/source/clean.ts)_
 <!-- commandsstop -->
 
 

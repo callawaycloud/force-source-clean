@@ -81,7 +81,7 @@ export default class Clean extends SfdxCommand {
       this.ux.startSpinner("Retrieving Source");
       await spawnPromise({
         cmd: "sfdx",
-        args: ["force:source:retrieve", "-x", this.flags.manifest, "-u", targetUser],
+        args: ["force:source:retrieve", "-x", this.flags.manifest, "-u", targetUser, '-w', "30"],
         options: { shell: true },
         onStdOut: (msg) => this.ux.log(msg)
       });
